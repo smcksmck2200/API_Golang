@@ -1,2 +1,2 @@
-go_modules
-
+# ignore All files and or directories
+*.json
