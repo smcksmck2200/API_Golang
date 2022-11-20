@@ -82,6 +82,17 @@ func createBook(c *gin.Context) {
 	books = append(books, newBook)
 	c.IndentedJSON(http.StatusCreated, newBook)
 }
+func deleteBook(c *gin.Context) {
+	id := c.Param("id")
+	book, err := getBookById(id)
+	if err != nil {
+		c.IndentedJSON(http.StatusNotFound, gin.H{"message": "Book not found."})
+		return
+	}
+	book.Quantity = -1
+	c.IndentedJSON(http.StatusOK, book)
+
+}
 func main() {
 	router := gin.Default()
 	router.GET("/books", getBooks)
@@ -89,5 +100,6 @@ func main() {
 	router.POST("/books", createBook)
 	router.PATCH("/checkout/:id", checkoutBook)
 	router.PATCH("/return/:id", returnBook)
+	router.DELETE("/delete/:id", deleteBook)
 	router.Run("localhost:8080")
 }
